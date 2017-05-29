@@ -5,7 +5,7 @@ import yaml
 
 from onde import Onde
 from onde.onde import TooManyArgumentsError
-from test.test_support import EnvironmentVarGuard
+from test.support import EnvironmentVarGuard
 package_onde = Onde()
 
 

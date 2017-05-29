@@ -10,7 +10,7 @@ PATH_VARIABLE_REGEX = re.compile(r'\{.*?\}')
 AliasedPath = namedtuple('AliasedPath', ['alias', 'path'])
 
 
-class MissingPathVariableError(StandardError):
+class MissingPathVariableError(Exception):
     def __init__(self, missing_variables):
         self.missing_variables = missing_variables
 
@@ -18,12 +18,12 @@ class MissingPathVariableError(StandardError):
         return "All path variables need to be specified. Missing variables: {}".format(string.join(self.missing_variables, ', '))
 
 
-class UnknownAliasError(StandardError):
+class UnknownAliasError(Exception):
     def __str__(self):
         return 'No file or directory with the specified alias was found.'
 
 
-class IncorrectlyFormattedPathsFile(StandardError):
+class IncorrectlyFormattedPathsFile(Exception):
     def __init__(self, hint=''):
         self.hint = hint
 
@@ -33,7 +33,7 @@ class IncorrectlyFormattedPathsFile(StandardError):
                'for guidance on how to structure the file properly.'.format(self.hint)
 
 
-class DuplicateAliasesError(StandardError):
+class DuplicateAliasesError(Exception):
     def __init__(self, alias):
         self.alias = alias
 
@@ -41,7 +41,7 @@ class DuplicateAliasesError(StandardError):
         return 'Duplicate alias "{}" defined in paths YAML file'.format(self.alias)
 
 
-class DuplicatePathVariablesError(StandardError):
+class DuplicatePathVariablesError(Exception):
     def __init__(self, path):
         self.path = path
 
@@ -49,7 +49,7 @@ class DuplicatePathVariablesError(StandardError):
         return 'Duplicate path variable names defined for path string "{}"'.format(self.path)
 
 
-class TooManyArgumentsError(StandardError):
+class TooManyArgumentsError(Exception):
     def __str__(self):
         return 'Too many path variable arguments were passed into the paths() method.'
 
@@ -66,7 +66,7 @@ class DirectoryStructure(object):
 
     def _expand_node(self, node, parent_path=''):
         try:
-            alias_ = node.keys()[0]
+            alias_ = list(node.keys())[0]
         except AttributeError:
             raise IncorrectlyFormattedPathsFile(hint='Each node should be a dictionary with an alias as its key.')
         except IndexError:
@@ -92,7 +92,7 @@ class DirectoryStructure(object):
             raise IncorrectlyFormattedPathsFile(hint='Node data should be a list which includes a path (required) and child nodes (optional).')
 
         expanded = self._expand_home_path(joined)
-        escaped = string.replace(expanded, ' ', '\ ')
+        escaped = str.replace(expanded, ' ', '\ ')
         return escaped
 
     def _expand_home_path(self, path):
@@ -145,7 +145,7 @@ class Onde(object):
 
     def _replace_path_variables(self, path, *args, **kwargs):
         if kwargs:
-            for k, v in kwargs.iteritems():
+            for k, v in kwargs.items():
                 path = re.sub(r'\{{{}\}}'.format(k), v, path)
 
         unreplaced_variables_matches = PATH_VARIABLE_REGEX.findall(path)
