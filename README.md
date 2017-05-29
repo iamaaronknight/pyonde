@@ -43,9 +43,9 @@ Paths can include variables, which are wrapped in curly braces. When calling `pa
 
 **paths.yml**
 ```yaml
-my_alias:
-  path: "/{my_directory}/{my_file}.txt"
-
+- my_alias:
+  - path: 
+    - "/{my_directory}/{my_file}.txt"
 ```
 
 ```python
