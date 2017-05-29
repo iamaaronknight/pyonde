@@ -1,0 +1,9 @@
+# Paths file for Onde package
+- package_dir:
+  - 'onde'
+  - main:
+    - 'onde.py'
+  - tests_dir:
+    - 'tests'
+    - temp_yaml:
+      - 'tmp_paths.yml'
