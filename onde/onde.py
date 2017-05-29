@@ -19,8 +19,11 @@ class MissingPathVariableError(Exception):
 
 
 class UnknownAliasError(Exception):
+    def __init__(self, alias):
+        self.alias = alias
+
     def __str__(self):
-        return 'No file or directory with the specified alias was found.'
+        return 'No file or directory with the specified alias {} was found.'.format(self.alias)
 
 
 class IncorrectlyFormattedPathsFile(Exception):
@@ -141,7 +144,7 @@ class Onde(object):
             if aliased_path.alias == alias:
                 return aliased_path.path
 
-        raise UnknownAliasError
+        raise UnknownAliasError(alias)
 
     def _replace_path_variables(self, path, *args, **kwargs):
         if kwargs:
