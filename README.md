@@ -43,9 +43,8 @@ Paths can include variables, which are wrapped in curly braces. When calling `pa
 
 **paths.yml**
 ```yaml
-- my_alias:
-  - path: 
-    - "/{my_directory}/{my_file}.txt"
+- my_alias: 
+  - "/{my_directory}/{my_file}.txt"
 ```
 
 ```python
@@ -102,7 +101,7 @@ A well-formed Onde paths file should be in the format:
     - 'path_segment'
 ```
 
-Each mapping has a single alias as its key and a list as the value of that key. The first item in the list is a  
+Each mapping has a single alias as its key and a list as the value of that key. The first item in the list is a path segment, which will be appended to all of the path segments above it. Every item after that is a child alias.
 
 
 ## Contributing
