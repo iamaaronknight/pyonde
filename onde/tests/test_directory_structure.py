@@ -35,18 +35,19 @@ class TestDirectoryStructure(TestCase):
         directory_structure = DirectoryStructure(yaml_data=[{'expanded': ['~/test']}])
         directory_structure.expand()
         self.assertEqual(
-            directory_structure.paths,
-            {AliasedPath(alias='expanded', path=(os.path.join(os.path.expanduser('~'), 'test')))}
+            directory_structure.paths[0].path,
+            os.path.join(os.path.expanduser('~'), 'test')
         )
 
     def test_it_deals_with_spaces_in_paths(self):
         directory_structure = DirectoryStructure(yaml_data=[
-            {'spacy': ['test/A Path With Dumb Spaces']}
+            {'spacy': ['test a/',
+                       {'spacy2': ['Path With Dumb Spaces']}]}
         ])
         directory_structure.expand()
         self.assertEqual(
-            directory_structure.paths,
-            {AliasedPath(alias='spacy', path='test/A\ Path\ With\ Dumb\ Spaces')}
+            directory_structure.paths[1].path,
+            'test\ a/Path\ With\ Dumb\ Spaces'
         )
 
 

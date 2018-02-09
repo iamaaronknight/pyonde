@@ -66,6 +66,7 @@ class DirectoryStructure(object):
     def expand(self):
         for node in self.yaml_data:
             self._expand_node(node)
+        self.paths = [path._replace(path=str.replace(path.path, ' ', '\ ')) for path in self.paths]
 
     def _expand_node(self, node, parent_path=''):
         try:
@@ -95,8 +96,7 @@ class DirectoryStructure(object):
             raise IncorrectlyFormattedPathsFile(hint='Node data should be a list which includes a path (required) and child nodes (optional).')
 
         expanded = self._expand_home_path(joined)
-        escaped = str.replace(expanded, ' ', '\ ')
-        return escaped
+        return expanded
 
     def _expand_home_path(self, path):
         if re.search(r'^~', path):

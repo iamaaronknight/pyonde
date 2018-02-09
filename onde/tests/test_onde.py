@@ -5,7 +5,6 @@ import yaml
 
 from onde import Onde
 from onde.onde import TooManyArgumentsError
-from test.support import EnvironmentVarGuard
 package_onde = Onde()
 
 
@@ -38,18 +37,6 @@ class TestOndeInstantiation(TestOndeBase):
         onde = Onde(paths_file_path=self.temp_yaml_path)
         self.assertEqual(onde.paths, {'alias_1': 'test/foo'})
         self.assertEqual(onde.aliases, ['alias_1'])
-
-    def test_paths_file_can_be_set_as_an_environment_variable(self):
-        env = EnvironmentVarGuard()
-        env.set('ONDEFILE_PATH', self.temp_yaml_path)
-        self._create_yaml(
-            data=[{'alias_a': ['test/bar']}],
-            path=self.temp_yaml_path
-        )
-        with env:
-            onde = Onde()
-            self.assertEqual(onde.paths, {'alias_a': 'test/bar'})
-            self.assertEqual(onde.aliases, ['alias_a'])
 
     def test_paths_file_can_be_read_from_paths_dot_yaml_in_root_directory(self):
         # This test uses the paths.yaml file for the Onde package itself.

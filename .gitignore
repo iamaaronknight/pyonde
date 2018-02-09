@@ -16,3 +16,5 @@
 
 # Other junk files
 .DS_Store
+
+venv
